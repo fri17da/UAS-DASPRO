@@ -1,0 +1,126 @@
+// Nama: Syafrida Ade Aulia Hakim
+// NIM: 244107060002
+// No.absen: 23
+import java.util.Scanner;
+
+public class UAS1C23 {
+    static String[] namaTim23 = new String[50]; 
+    static int[][] skorTim23 = new int[50][2]; 
+    static int jumlahTim23 = (60%3)+4; 
+    static boolean dataDiinput23 = false; 
+    static Scanner sc23 = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int pilihMenu23;
+
+        do {
+            tampilkanMenuUtama23();
+            pilihMenu23 = sc23.nextInt();
+            sc23.nextLine(); 
+
+            switch (pilihMenu23) {
+                case 1:
+                    inputDataSkorTim23();
+                    break;
+                case 2:
+                    tampilkanTabelSkor23();
+                    break;
+                case 3:
+                    tentukanJuara23();
+                    break;
+                case 4:
+                    System.out.println("Program selesai. Terima kasih!");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid. Silahkan coba lagi.");
+            }
+
+        } while (pilihMenu23 != 4);
+    }
+
+    static void tampilkanMenuUtama23() {
+        System.out.println("\n===== MENU UTAMA =====");
+        System.out.println("1. Input Data Skor Tim");
+        System.out.println("2. Tampilkan Tabel Skor");
+        System.out.println("3. Tentukan Juara");
+        System.out.println("4. Keluar");
+        System.out.print("Pilih menu (1-4): ");
+    }
+
+    static void inputDataSkorTim23() {
+        for (int i = 0; i < jumlahTim23; i++) {
+            System.out.print("Masukkan nama tim ke-" + (i + 1) + ": ");
+            namaTim23[i] = sc23.nextLine();
+
+            for (int j = 0; j < 2; j++) {
+                while (true) { 
+                    System.out.print("Masukkan skor " + namaTim23[i] + " untuk Level " + (j + 1) + ": ");
+                    skorTim23[i][j] = sc23.nextInt();
+
+                    if (skorTim23[i][j] < 0) {
+                        System.out.println("Skor harus bilangan positif. Coba lagi!");
+                    } else if (j == 0 && skorTim23[i][j] < 35) {
+                        skorTim23[i][j] = 0;
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+                sc23.nextLine(); 
+            }
+        }
+
+        dataDiinput23 = true; 
+        System.out.println("Data skor tim berhasil diinput.");
+    }
+    static void tampilkanTabelSkor23() {
+    if (!dataDiinput23) {
+        System.out.println("Belum ada data tim yang diinputkan.");
+        return;
+    }
+
+    System.out.println("\n=== Tabel Skor Turnamen ===");
+    System.out.printf("%-15s %-10s %-10s %-10s%n", "Nama Tim", "Level 1", "Level 2", "Total Skor");
+
+    for (int i = 0; i < jumlahTim23; i++) {
+        int totalSkor23 = skorTim23[i][0] + skorTim23[i][1];
+
+        if (totalSkor23 % 2 == 0) {
+            totalSkor23 -= 15;
+        }
+
+        if (skorTim23[i][0] > 50 && skorTim23[i][1] > 50) {
+            totalSkor23 += 13;
+        }
+
+        System.out.printf("%-15s %-10d %-10d %-10d%n", namaTim23[i], skorTim23[i][0], skorTim23[i][1], totalSkor23);
+    }
+    }
+    static void tentukanJuara23() {
+        if (!dataDiinput23) {
+            System.out.println("Tidak ada data yang bisa ditampilkan.");
+            return;
+        }
+
+        int maxSkor23 = -1;
+        int timJuara23 = -1;
+
+        for (int i = 0; i < jumlahTim23; i++) {
+            int totalSkorTim23 = skorTim23[i][0] + skorTim23[i][1];
+
+            if (totalSkorTim23 > maxSkor23) {
+                maxSkor23 = totalSkorTim23;
+                timJuara23 = i;
+            } else if (totalSkorTim23 == maxSkor23) {
+                if (skorTim23[i][1] > skorTim23[timJuara23][1]) {
+                    timJuara23 = i;
+                } else if (skorTim23[i][1] == skorTim23[timJuara23][1]) {
+                    System.out.println("Turnamen berakhir seri. Tim terbaik adalah " + namaTim23[i]);
+                    return;
+                }
+            }
+        }
+
+        System.out.println("Selamat kepada Tim " + namaTim23[timJuara23] + " yang telah memenangkan kompetisi!");
+    }
+}
